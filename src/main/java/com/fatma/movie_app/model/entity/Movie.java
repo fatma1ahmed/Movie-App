@@ -18,5 +18,17 @@ public class Movie {
     private String year;
     private String plot;
     private String poster;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setYear(String year) {
+        this.year = year;
+    }
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
 
 }
