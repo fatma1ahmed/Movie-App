@@ -1,15 +1,18 @@
 package com.fatma.movie_app.model.entity;
 
+import com.fatma.movie_app.model.dto.MovieResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +21,5 @@ public class Movie {
     private String year;
     private String plot;
     private String poster;
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setYear(String year) {
-        this.year = year;
-    }
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
 
 }

@@ -1,7 +1,11 @@
 package com.fatma.movie_app.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fatma.movie_app.model.entity.Movie;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,20 +19,7 @@ public class MovieResponse {
     private String plot;
     @JsonProperty("Poster")
     private String poster;
-    public String getTitle() {
-        return this.title;
-    }
-    public String getYear() {
-        return this.year;
-    }
-    public String getPlot() {
-        return this.plot;
-    }
-    public String getPoster() {
-        return this.poster;
-    }
-
-
-
-
+    @JsonProperty("Response")
+    private String response;
 }
+

@@ -1,7 +1,10 @@
 package com.fatma.movie_app.service;
 
 import com.fatma.movie_app.exception.RecordNotCorrectException;
+import com.fatma.movie_app.mapper.MovieMapper;
+import com.fatma.movie_app.mapper.MovieSearchMapper;
 import com.fatma.movie_app.model.dto.MovieResponse;
+import com.fatma.movie_app.model.dto.MovieSearchResponse;
 import com.fatma.movie_app.model.entity.Movie;
 import com.fatma.movie_app.repository.MovieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +18,12 @@ public class MovieService {
     @Autowired
     private MovieRepo movieRepo;
     @Autowired
+    private MovieMapper movieMapper;
+    @Autowired
     private RestTemplate restTemplate;
-    private final String OMDb_API_url = "http://www.omdbapi.com/?apikey=365e2720&";
+    @Autowired
+    private MovieSearchMapper movieSearchMapper;
+    private final String OMDb_API_URL = "http://www.omdbapi.com/?apikey=365e2720&";
 
     public Movie addMovie(Movie movie) {
         return movieRepo.save(movie);
@@ -44,19 +51,43 @@ public class MovieService {
         movieRepo.deleteAll();
     }
 
-    public Movie fetchMovieFromOMDb(String title) {
-        String url = OMDb_API_url + "t=" + title;
+    public MovieResponse fetchMovieFromOMDb(String title) {
+        String url = OMDb_API_URL + "t=" + title;
 
-        MovieResponse response = restTemplate.getForObject(url, MovieResponse.class);
-        if (response!= null) {
-            Movie movie=new Movie();
-            movie.setTitle(response.getTitle());
-            movie.setYear(response.getYear());
-            movie.setPlot(response.getPlot());
-            movie.setPoster(response.getPoster());
-            return movie;
+        MovieResponse movieResponse = restTemplate.getForObject(url, MovieResponse.class);
+        if (movieResponse != null && "True".equals(movieResponse.getResponse())) {
+           Movie movie= movieMapper.toEntity(movieResponse);
+
+            return movieMapper.toResponse(movie);
+
         } else {
             throw new RecordNotCorrectException("Movie not found in OMDB API ");
         }
     }
+public List<MovieResponse> fetchMovieListFromOMDb(String title) {
+    String url = OMDb_API_URL + "s=" + title;
+    MovieSearchResponse movieSearchResponse = restTemplate.getForObject(url, MovieSearchResponse.class);
+    if (movieSearchResponse != null && "True".equalsIgnoreCase(movieSearchResponse.getResponse())) {
+       List<MovieResponse> movieResponseList= movieSearchResponse.getMovieResponseList();
+        if (movieResponseList != null && !movieResponseList.isEmpty()) {
+            movieResponseList.forEach(movieResponse -> {
+                if ( movieResponse.getPlot() == null) {
+                    movieResponse.setPlot("N/A");
+                }
+                    if(movieResponse.getResponse()==null) {
+                        movieResponse.setResponse("True");
+                    }
+
+            });
+          List<Movie> movies=  movieSearchMapper.toEntities(movieResponseList);
+            return movieSearchMapper.toResponses(movies) ;
+        } else {
+            throw new RecordNotCorrectException("No movies found in the search results.");
+        }
+    }
+
+    else {
+        throw new RecordNotCorrectException("Movies not found in OMDB API for title: " + title);
+    }
+}
 }

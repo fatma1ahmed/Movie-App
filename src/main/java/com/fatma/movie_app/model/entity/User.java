@@ -19,4 +19,5 @@ public class User {
     @Column(unique = true)
     private String userName;
     private String Password;
+    private String role;
 }
