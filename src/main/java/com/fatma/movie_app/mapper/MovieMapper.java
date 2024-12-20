@@ -12,7 +12,4 @@ public interface MovieMapper {
     MovieResponse toResponse(Movie movie);
     Movie toEntity(MovieResponse movieResponse);
 
-
-
-
 }

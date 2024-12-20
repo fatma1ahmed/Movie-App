@@ -28,6 +28,11 @@ public class MovieService {
     public Movie addMovie(Movie movie) {
         return movieRepo.save(movie);
     }
+    public Movie updateMovie(Movie movie,long id) {
+       getMovieById(id);
+       movie.setId(id);
+        return movieRepo.save(movie);
+    }
 
     public Movie getMovieById(long id) {
         return movieRepo.findById(id).orElseThrow(

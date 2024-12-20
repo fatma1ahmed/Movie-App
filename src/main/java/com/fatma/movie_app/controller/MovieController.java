@@ -25,6 +25,10 @@ public class MovieController {
     public Movie addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
+    @PutMapping("/update/{id}")
+    public Movie updateMovie(@RequestBody Movie movie,@PathVariable long id) {
+        return movieService.updateMovie(movie,id);
+    }
     @GetMapping("/getMovie/{id}")
     public Movie getMovieById(@PathVariable long id) {
         return movieService.getMovieById(id);
@@ -34,7 +38,7 @@ public class MovieController {
         return movieService.getAllMovies();
 
     }
-@DeleteMapping("/removeMovieById/{id}")
+@DeleteMapping("/removeMovie/{id}")
     public void removeMovieById(@PathVariable long id) {
          movieService.removeMovieById(id);
 
