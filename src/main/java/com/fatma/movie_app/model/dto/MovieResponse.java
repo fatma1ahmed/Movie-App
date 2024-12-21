@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovieResponse {
+    @JsonProperty("movieId")
+    private long id;
     @JsonProperty("Title")
     private String title;
     @JsonProperty("Year")

@@ -35,7 +35,8 @@ public class SpringSecurityConfig {
 
             authRequest .requestMatchers("/movies/getMovie/**").hasAnyRole("USER","ADMIN");
             authRequest .requestMatchers("/movies/getAllMovies").hasAnyRole("USER","ADMIN");
-            authRequest .requestMatchers("/movies/search").hasRole("USER");
+            authRequest .requestMatchers("/movies/search").hasAnyRole("USER","ADMIN");
+            authRequest .requestMatchers("/movies/rateMovie").hasRole("USER");
 
             authRequest .anyRequest().authenticated();
 

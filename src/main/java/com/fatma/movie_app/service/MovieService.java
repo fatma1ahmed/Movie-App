@@ -29,8 +29,8 @@ public class MovieService {
     private RestTemplate restTemplate;
     @Autowired
     private MovieSearchMapper movieSearchMapper;
-    @Value("${OMDb_API_URL}")
-    private  String OMDb_API_URL;
+//    @Value("${OMDb_API_URL}")
+    private final   String OMDb_API_URL = "http://www.omdbapi.com/?apikey=365e2720&";
 
         public MovieResponse addMovie(MovieRequest movieRequest) {
             Movie movie=movieMapper.toEntity(movieRequest);

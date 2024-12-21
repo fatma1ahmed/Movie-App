@@ -54,6 +54,7 @@ public class MovieController {
     public List<MovieResponse> findMoviesByTitle(@RequestParam String title){
       return   movieService.findMoviesByTitle(title);
     }
+    @PostMapping("/rateMovie")
     public ResponseEntity<?> addRate(@RequestParam long movieId, @RequestParam double rate){
         movieService.addRate(movieId,rate);
         return new ResponseEntity<>("add rate done", HttpStatus.OK);
