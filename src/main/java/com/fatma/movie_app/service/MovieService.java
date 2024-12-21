@@ -3,6 +3,7 @@ package com.fatma.movie_app.service;
 import com.fatma.movie_app.exception.RecordNotCorrectException;
 import com.fatma.movie_app.mapper.MovieMapper;
 import com.fatma.movie_app.mapper.MovieSearchMapper;
+import com.fatma.movie_app.model.dto.MovieRequest;
 import com.fatma.movie_app.model.dto.MovieResponse;
 import com.fatma.movie_app.model.dto.MovieSearchResponse;
 import com.fatma.movie_app.model.entity.Movie;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,26 +32,29 @@ public class MovieService {
     @Value("${OMDb_API_URL}")
     private  String OMDb_API_URL;
 
-    public Movie addMovie(Movie movie) {
-        return movieRepo.save(movie);
+        public MovieResponse addMovie(MovieRequest movieRequest) {
+            Movie movie=movieMapper.toEntity(movieRequest);
+        return movieMapper.toResponse(movieRepo.save(movie));
     }
-    public Movie updateMovie(Movie movie,long id) {
+    public MovieResponse updateMovie(MovieRequest movieRequest,long id) {
        getMovieById(id);
+        Movie movie=movieMapper.toEntity(movieRequest);
        movie.setId(id);
-        return movieRepo.save(movie);
+        return movieMapper.toResponse(movieRepo.save(movie));
     }
 
-    public Movie getMovieById(long id) {
+    public Movie getEntityMovieById(long id) {
         return movieRepo.findById(id).orElseThrow(
                 () -> new RecordNotCorrectException("movie with Id " + id + "not found")
         );
     }
+    public MovieResponse getMovieById(long id){
+          return movieMapper.toResponse(getEntityMovieById(id));
+    }
 
-    public List<Movie> getAllMovies() {
-        List<Movie> movies = movieRepo.findAll();
-        if (!movies.isEmpty() && movies != null)
-            return movies;
-        else throw new RecordNotCorrectException("All movies not found");
+    public List<MovieResponse> getAllMovies() {
+
+            return movieRepo.findAll().stream().map(movieMapper::toResponse).collect(Collectors.toList());
     }
 
     public void removeMovieById(long id) {
@@ -66,9 +71,7 @@ public class MovieService {
 
         MovieResponse movieResponse = restTemplate.getForObject(url, MovieResponse.class);
         if (movieResponse != null && "True".equals(movieResponse.getResponse())) {
-           Movie movie= movieMapper.toEntity(movieResponse);
-
-            return movieMapper.toResponse(movie);
+            return movieResponse;
 
         } else {
             throw new RecordNotCorrectException("Movie not found in OMDB API ");
@@ -103,5 +106,10 @@ public List<MovieResponse> fetchMovieListFromOMDb(String title) {
 public List<MovieResponse> findMoviesByTitle(String title){
         return movieRepo.findByTitle(title).stream().map(movieMapper::toResponse).collect(Collectors.toList());
 
+}
+public void addRate(long movieId,double rate){
+        Movie movie=getEntityMovieById(movieId);
+        movie.setRate(rate);
+        movieRepo.save(movie);
 }
 }

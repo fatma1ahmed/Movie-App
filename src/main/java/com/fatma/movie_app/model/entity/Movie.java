@@ -22,5 +22,5 @@ public class Movie {
     private String year;
     private String plot;
     private String poster;
-
+    private double rate;
 }
