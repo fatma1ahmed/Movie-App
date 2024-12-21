@@ -27,17 +27,27 @@ private long id;
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities=new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" +userRole.toString()));
-        return null;
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomUserDetails{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole='" + userRole + '\'' +
+                '}';
     }
 
     @Override
     public String getPassword() {
-        return this.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return this.getUsername();
+        return userName;
     }
 
     @Override

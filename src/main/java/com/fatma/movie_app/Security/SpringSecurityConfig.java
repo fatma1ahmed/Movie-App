@@ -24,7 +24,7 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authRequest->{
-//            authRequest.anyRequest().permitAll();fetchMovieFromOMDb
+//            authRequest.anyRequest().permitAll();
             authRequest.requestMatchers("/auth/**").permitAll();
             authRequest .requestMatchers("/movies/add").hasRole("ADMIN");
             authRequest .requestMatchers("/movies/add/**").hasRole("ADMIN");
@@ -34,8 +34,8 @@ public class SpringSecurityConfig {
             authRequest .requestMatchers("/movies/fetchMovieFromOMDb").hasRole("ADMIN");
             authRequest .requestMatchers("/movies/fetchMovieListFromOMDb").hasRole("ADMIN");
 
-            authRequest .requestMatchers("/movies/getMovie/**").hasRole("USER");
-            authRequest .requestMatchers("/movies/getAllMovies").hasRole("USER");
+            authRequest .requestMatchers("/movies/getMovie/**").hasAnyRole("USER","ADMIN");
+            authRequest .requestMatchers("/movies/getAllMovies").hasAnyRole("USER","ADMIN");
 
             authRequest .anyRequest().authenticated();
 

@@ -7,23 +7,27 @@ import com.fatma.movie_app.model.dto.MovieResponse;
 import com.fatma.movie_app.model.dto.MovieSearchResponse;
 import com.fatma.movie_app.model.entity.Movie;
 import com.fatma.movie_app.repository.MovieRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MovieService {
-    @Autowired
-    private MovieRepo movieRepo;
+
+    private final MovieRepo movieRepo;
     @Autowired
     private MovieMapper movieMapper;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private MovieSearchMapper movieSearchMapper;
-    private final String OMDb_API_URL = "http://www.omdbapi.com/?apikey=365e2720&";
+    @Value("${OMDb_API_URL}")
+    private  String OMDb_API_URL;
 
     public Movie addMovie(Movie movie) {
         return movieRepo.save(movie);
