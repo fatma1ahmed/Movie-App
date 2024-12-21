@@ -2,9 +2,8 @@ package com.fatma.movie_app.controller;
 
 import com.fatma.movie_app.model.dto.MovieRequest;
 import com.fatma.movie_app.model.dto.MovieResponse;
-import com.fatma.movie_app.model.entity.Movie;
 import com.fatma.movie_app.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
+@RequiredArgsConstructor
 public class MovieController {
-    @Autowired
-    private MovieService movieService;
+
+    private final MovieService movieService;
     @GetMapping("/fetchMovieFromOMDb")
     public MovieResponse fetchMovieFromOMDb(@RequestParam String title){
         return movieService.fetchMovieFromOMDb(title);
@@ -42,13 +42,15 @@ public class MovieController {
 
     }
 @DeleteMapping("/removeMovie/{id}")
-    public void removeMovieById(@PathVariable long id) {
+    public ResponseEntity<?> removeMovieById(@PathVariable long id) {
          movieService.removeMovieById(id);
+    return new ResponseEntity<>("movie with id: "+ id + "deleted", HttpStatus.ACCEPTED);
 
     }
     @DeleteMapping("/removeAllMovies")
-    public void removeAllMovies() {
+    public ResponseEntity<?> removeAllMovies() {
         movieService.removeAllMovies();
+        return new ResponseEntity<>("All movies deleted successfull", HttpStatus.ACCEPTED);
     }
     @GetMapping("/search")
     public List<MovieResponse> findMoviesByTitle(@RequestParam String title){
