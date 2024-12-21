@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
             throw new RecordNotCorrectException("User not found");
         }
         if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-            return new LoginResponse(user.getId(), user.getUserName(), user.getRole());
+            return new LoginResponse(user.getId(), user.getUserName(),user.getPassword(), user.getRole());
         } else {
             throw new RecordNotCorrectException("Invalid credentials");
         }
