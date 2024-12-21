@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MovieController {
 
     private final MovieService movieService;

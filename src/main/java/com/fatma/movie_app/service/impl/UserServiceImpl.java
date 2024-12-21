@@ -1,5 +1,8 @@
 package com.fatma.movie_app.service.impl;
 
+import com.fatma.movie_app.exception.RecordNotCorrectException;
+import com.fatma.movie_app.exception.RecordNotFoundException;
+import com.fatma.movie_app.model.dto.LoginResponse;
 import com.fatma.movie_app.model.entity.User;
 import com.fatma.movie_app.repository.UserRepo;
 import com.fatma.movie_app.service.UserService;
@@ -16,13 +19,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public boolean login(String userName, String rawPassword) {
-        User user = userRepo.findByUserName(userName);
-        if (user != null) {
-            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-                return true;
-            }
+    public LoginResponse login(String userName, String rawPassword) {
+        User user=userRepo.findByUserName(userName);
+        if (user == null) {
+            throw new RecordNotCorrectException("User not found");
         }
-        return false;
+        if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+            return new LoginResponse(user.getId(), user.getUserName(), user.getRole());
+        } else {
+            throw new RecordNotCorrectException("Invalid credentials");
+        }
     }
+
 }
