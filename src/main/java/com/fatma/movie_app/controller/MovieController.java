@@ -47,6 +47,10 @@ public class MovieController {
     public void removeAllMovies() {
         movieService.removeAllMovies();
     }
+    @GetMapping("/search")
+    public List<MovieResponse> findMoviesByTitle(@RequestParam String title){
+      return   movieService.findMoviesByTitle(title);
+    }
 
 }
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -98,5 +99,9 @@ public List<MovieResponse> fetchMovieListFromOMDb(String title) {
     else {
         throw new RecordNotCorrectException("Movies not found in OMDB API for title: " + title);
     }
+}
+public List<MovieResponse> findMoviesByTitle(String title){
+        return movieRepo.findByTitle(title).stream().map(movieMapper::toResponse).collect(Collectors.toList());
+
 }
 }

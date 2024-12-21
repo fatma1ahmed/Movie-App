@@ -1,4 +1,4 @@
-package com.fatma.movie_app.Security;
+package com.fatma.movie_app.security;
 
 import com.fatma.movie_app.model.entity.User;
 import com.fatma.movie_app.repository.UserRepo;
@@ -11,10 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j

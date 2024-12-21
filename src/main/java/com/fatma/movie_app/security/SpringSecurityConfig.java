@@ -1,11 +1,10 @@
-package com.fatma.movie_app.Security;
+package com.fatma.movie_app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,6 +35,7 @@ public class SpringSecurityConfig {
 
             authRequest .requestMatchers("/movies/getMovie/**").hasAnyRole("USER","ADMIN");
             authRequest .requestMatchers("/movies/getAllMovies").hasAnyRole("USER","ADMIN");
+            authRequest .requestMatchers("/movies/search").hasRole("USER");
 
             authRequest .anyRequest().authenticated();
 
